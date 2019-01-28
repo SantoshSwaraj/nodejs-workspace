@@ -1,0 +1,20 @@
+{
+  "name": "4_lesson_httpmethods",
+  "version": "1.0.0",
+  "description": "learning http methods",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "keywords": [
+    "http",
+    "methods"
+  ],
+  "author": "Santosh Kushwaha",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}

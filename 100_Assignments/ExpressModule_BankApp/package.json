@@ -1,0 +1,19 @@
+{
+  "name": "expressmodule_bankapp",
+  "version": "1.0.0",
+  "description": "my first express module app",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node ./controller_modules/server.js"
+  },
+  "keywords": [
+    "express",
+    "app"
+  ],
+  "author": "Santosh Kushwaha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
