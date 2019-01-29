@@ -1,0 +1,22 @@
+{
+  "name": "mvc_demo",
+  "version": "1.0.0",
+  "description": "MVC DEMO PROJECT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "keywords": [
+    "mvc"
+  ],
+  "author": "Santosh Kushwaha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongodb": "^3.1.13"
+  },
+  "devDependencies": {
+    "debug": "^4.1.1"
+  }
+}
