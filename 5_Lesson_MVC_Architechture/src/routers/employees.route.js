@@ -5,10 +5,13 @@ const empCtrl = require('../controllers/employees.controller');
 
 routers
     .route('/employees')
-    .get(empCtrl.getEmployees);
+    .get(empCtrl.getEmployees)
+    .post(empCtrl.insertEmployee);
 
 routers
-    .route('/employee/:id')
-    .get(empCtrl.getEmployee);
+    .route('/employees/:id')
+    .get(empCtrl.getEmployee)
+    .put(empCtrl.updateEmployee)
+    .delete(empCtrl.deleteEmployee);
 
 module.exports = routers;
