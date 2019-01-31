@@ -5,6 +5,6 @@ const loginCtrl = require('../controllers/login.controller');
 
 router
     .route('/login')
-    .get(loginCtrl.getLogin)
+    .post(loginCtrl.checkLogin)
 
 module.exports = router;

@@ -14,6 +14,9 @@ let app = express();
 //Enable body-parser to parser json
 app.use(bodyParser.json());
 
+//Enable body-parser to parser urlencoded data
+app.use(bodyParser.urlencoded());
+
 //Enable route
 app.use('/', registrationRoutes);
 app.use('/', loginRoutes);
