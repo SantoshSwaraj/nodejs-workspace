@@ -1,0 +1,20 @@
+{
+  "name": "6_lesson_mongoose_crud",
+  "version": "1.0.0",
+  "description": "mongoose demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "mongoose",
+    "demo"
+  ],
+  "author": "Santosh Kushwaha",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.8"
+  }
+}
