@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const Product = require('../models/products.model');
+const SERVER_CONGIF = require('../conf/server.conf');
 
 module.exports.createProduct = (req,res,next) =>{
     const product = new Product({
@@ -12,9 +13,18 @@ module.exports.createProduct = (req,res,next) =>{
     product
         .save()
         .then(result=>{
-            res.status(200).json({
-                message:"Handling POST resquets to /products",
-                createProduct:result
+            console.log(result);
+            res.status(201).json({
+                message:"Created Product Successfully",
+                createProduct:{
+                    name:result.name,
+                    price:result.price,
+                    _id:result._id,
+                    request:{
+                        type:"GET",
+                        url:`http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/products/${result._id}`
+                    }
+                }
             });
         })
         .catch(err=>{
@@ -28,9 +38,24 @@ module.exports.createProduct = (req,res,next) =>{
 module.exports.getProducts = (req,res,next) => {
     Product
         .find()
+        .select("name price _id")
         .exec()
         .then(docs =>{
-            res.status(200).json(docs);
+            let response = {
+                count:docs.length,
+                products:docs.map(doc=>{
+                    return{
+                        _id:doc._id,
+                        name:doc.name,
+                        price:doc.price,
+                        request:{
+                            type:"GET",
+                            url:`http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/products/${doc._id}`
+                        }
+                    }
+                })
+            }
+            res.status(200).json(response);
         })
         .catch(err=>{
             console.log(err);
@@ -44,9 +69,34 @@ module.exports.getProduct = (req,res,next) =>{
     const produtId = req.params.productId;
     Product
         .findById(produtId)
+        .select('_id name price')
         .exec()
         .then(doc=>{
-            res.status(200).json(doc);
+            let response = {
+                _id : doc._id,
+                name : doc.name,
+                price : doc.price,
+                request : [
+                    {
+                        type:'GET',
+                        desc : 'GET_ALL_PRODC',
+                        url:`http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/products`,
+                        
+                    },
+                    {
+                        type:'PATCH',
+                        body:`[{'propName':'name','value':'<String type>'},{'propName':'price','value':'<Number type>'}]`,
+                        url:`http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/products/${doc._id}`
+                        
+                    },
+                    {
+                        type:'DELETE',
+                        url:`http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/products/${doc._id}`
+                        
+                    }
+                ]
+            }
+            res.status(200).json(response);
         })
         .catch(err=>{
             res.status(500).json({
@@ -64,7 +114,14 @@ module.exports.updateProduct = (req,res,next) =>{
         .update({"_id":productId},{$set:updateOps})
         .exec()
         .then(result=>{
-            res.status(200).json(result);
+            let response = {
+                message:`${productId} Updated Successfully`,
+                request:{
+                    type:"GET",
+                    url:`http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/products/${doc._id}`
+                }
+            }
+            res.status(200).json(response);
         })
         .catch(err=>{
             res.status(500).json({
@@ -79,6 +136,15 @@ module.exports.deleteProduct = (req,res,next) =>{
         .deleteOne({"_id": productId})
         .exec()
         .then(result=>{
+            let response = {
+                message:`${productId} Deleted Successfully`,
+                request : {
+                    type:'POST',
+                    desc : 'CREATE_NEW_PRODC',
+                    body : `{'name':<String>, 'value':<Number>}`,
+                    url:`http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/products`,
+                }
+            }
             res.status(200).json(result);
         })
         .catch(err=>{
