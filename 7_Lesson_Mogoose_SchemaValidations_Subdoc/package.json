@@ -1,0 +1,21 @@
+{
+  "name": "7_lesson_mogoose_schemavalidations_subdoc",
+  "version": "1.0.0",
+  "description": "mogoose schema validations",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "mongoose",
+    "schema",
+    "validations"
+  ],
+  "author": "Santosh Swaraj",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.10"
+  }
+}

@@ -1,11 +1,10 @@
 'use strict';
 
-require('./src/helpers/dbconnection');
+require('./src/helpers/dbConnection');
 const express = require('express');
 const bodyParser = require('body-parser');
 const SERVER_CONFIG = require('./src/conf/server.conf');
-const productRouter = require('./src/routers/products.route');
-const orderRouter = require('./src/routers/orders.route');
+const testRouter = require('./src/routers/test.route');
 
 const app = express();
 
@@ -13,8 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Enabling routes
-app.use('/products',productRouter);
-app.use('/orders',orderRouter);
+app.use('/test',testRouter);
 
 app.get('/', (req,res,next)=>{
     res.send(`Server is running on http://${SERVER_CONFIG.HOSTNAME}:${SERVER_CONFIG.PORT}`);
