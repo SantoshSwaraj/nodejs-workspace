@@ -1,0 +1,6 @@
+{
+    "env":{
+        "MONGO_LOCAL_PASS":"root",
+        "JWT_KEY":"secret"
+    }
+}

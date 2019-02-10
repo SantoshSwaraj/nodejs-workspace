@@ -2,9 +2,11 @@
 
 const router = require('express').Router();
 const productsCtrl = require('../controllers/products.controller');
+const multer = require('multer');
+const upload = multer({dest:'uploads/'});
 
 router
-    .route('/')
+    .route('/', upload.single('productImage'))
     .get(productsCtrl.getProducts)
     .post(productsCtrl.createProduct)
 

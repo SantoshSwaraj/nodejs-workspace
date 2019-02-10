@@ -1,0 +1,50 @@
+Start a new process with either a command, a file, a node program synchronously or asynchronously
+
+node file.js --> start new process
+
+Start A new Process asynchronously
+CHILD_PROCESS
+
+--> child_process.spawn()
+
+--> child_process.exec()
+
+--> child_process.execFile()
+
+--> child_process.fork()
+
+Start A new Process synchronously
+CHILD_PROCESS
+
+--> child_process.spawnSync()
+
+--> child_process.execSync()
+
+--> child_process.execFileSync()
+
+Events::
+
+"close" --> when stdio streams close
+"disconnect" --> after child.disconnect() is called by parent
+"error" --> when error occurs (no spawn, cannot kill, message from parent failed)
+"message" --> when process.send() is called by child
+"exit" --> when process ends
+
+Functions::
+
+child.disconnect()  
+child.kill([signal])
+child.send(message,handle,options,callback)
+ 
+Properties
+
+child.connected
+child.channel
+child.pid
+child.stdin
+child.stdout
+child.stderr
+child.stdio
+
+
+

@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Order = require('../models/orders.model');
 const Product = require('../models/products.model');
 const SERVER_CONGIF = require('../conf/server.conf');
-
+ 
 module.exports.createOrder = (req,res,next)=>{
     Product.findById(req.body.productId)
     .then(product => {
@@ -22,7 +22,7 @@ module.exports.createOrder = (req,res,next)=>{
       return order.save();
     })
     .then(result => {
-      console.log(result);
+      // console.log(result);
       res.status(201).json({
         message: "Order stored",
         createdOrder: {
@@ -32,7 +32,7 @@ module.exports.createOrder = (req,res,next)=>{
         },
         request: {
           type: "GET",
-          url: `http:/${SERVER_CONGIF.HOSTNAME}/:${SERVER_CONGIF.PORT}/orders/${result._id}`
+          url: `http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/orders/${result._id}`
         }
       });
     })
@@ -47,6 +47,7 @@ module.exports.createOrder = (req,res,next)=>{
 module.exports.getOrders = (req,res,next)=>{
     Order.find()
     .select("product quantity _id")
+    .populate('product','name')
     .exec()
     .then(docs => {
       res.status(200).json({
@@ -58,7 +59,7 @@ module.exports.getOrders = (req,res,next)=>{
             quantity: doc.quantity,
             request: {
               type: "GET",
-              url: `http:/${SERVER_CONGIF.HOSTNAME}/:${SERVER_CONGIF.PORT}/orders/${doc._id}`
+              url: `http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/orders/${doc._id}`
             }
           };
         })
@@ -71,3 +72,45 @@ module.exports.getOrders = (req,res,next)=>{
     });
 }
 
+module.exports.getOrder = (req,res,next)=>{
+  Order.findById(req.params.orderId)
+        .populate('product','name')
+        .exec()
+        .then(order=>{
+          if(!order){
+            return res.status(404).json({
+              message:'Order not null'
+            });
+          }
+            res.status(200).json({
+              order:order,
+              request:{
+                type:'GET',
+                url: `http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/orders`
+              }
+            });
+        })
+}
+
+module.exports.deleteOrder = (req,res,next)=>{
+  let filterQ = {'_id':req.params.orderId};
+  Order.remove(filterQ)
+        .exec()
+        .then(order=>{
+            res.status(200).json({
+              message:'Order Deleted',
+              request:[
+                {
+                  type:'GET',
+                  url: `http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/orders`,
+                },
+                {
+                  type:'POST',
+                  url: `http://${SERVER_CONGIF.HOSTNAME}:${SERVER_CONGIF.PORT}/orders`,
+                  body: {productId: 'Id', quantity:'Number'}
+                }
+              ]
+
+            });
+        })
+}
